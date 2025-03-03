@@ -6,7 +6,7 @@
 /*   By: lpolizzi <lpolizzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:03:07 by lpolizzi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:58:50 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 12:38:24 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,12 @@ char	*gnl_strdup(const char *s)
 	return (dup);
 }
 
-size_t	gnl_strlen(const char *str)
+size_t	gnl_strlen(const char *s)
 {
 	size_t	i;
 
-	if (!str)
-		return (0);
 	i = 0;
-	while (str[i])
+	while (s && s[i])
 		i++;
 	return (i);
 }

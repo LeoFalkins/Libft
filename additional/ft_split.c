@@ -6,42 +6,57 @@
 /*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:28:02 by lpolizzi          #+#    #+#             */
-/*   Updated: 2024/10/10 23:53:18 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:28:38 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_countwords(const char *s, char c)
+static void	free_tab(char **tab)
 {
 	int	i;
-	int	count;
 
-	i = 0;
-	count = 0;
-	while (s[i])
+	i = -1;
+	while (tab[++i])
+		free(tab[i]);
+	free(tab);
+}
+
+static bool	is_sep(char c, char *sep)
+{
+	if (!c)
+		return (true);
+	while (sep && *sep)
 	{
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
+		if (c == *sep)
+			return (true);
+		sep++;
+	}
+	return (false);
+}
+
+static int	ft_countwords(char *s, char *sep)
+{
+	int		count;
+	bool	in_word;
+
+	count = 0;
+	in_word = false;
+	while (*s)
+	{
+		if (is_sep(*s, sep))
+			in_word = false;
+		else if (!in_word)
+		{
+			in_word = true;
 			count++;
-		i++;
+		}
+		s++;
 	}
 	return (count);
 }
 
-static void	write_word(char *dest, char *src, char c)
-{
-	int	i;
-
-	i = 0;
-	while (src[i] && src[i] != c)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-}
-
-static void	make_split(char **strs, char *s, char c)
+static void	make_split(char **strs, char *s, char *sep)
 {
 	int	i;
 	int	j;
@@ -51,31 +66,37 @@ static void	make_split(char **strs, char *s, char c)
 	word = 0;
 	while (s[i])
 	{
-		if (s[i] == c)
+		if (is_sep(s[i], sep))
 			i++;
 		else
 		{
 			j = 0;
-			while (s[i + j] != c && s[i + j])
+			while (!is_sep(s[i + j], sep))
 				j++;
 			strs[word] = (char *)malloc(sizeof(char) * (j + 1));
 			if (!strs[word])
+			{
+				free_tab(strs);
 				return ;
-			write_word(strs[word], &s[i], c);
+			}
+			ft_strlcpy(strs[word++], s + i, j + 1);
 			i += j;
-			word++;
 		}
 	}
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split(const char *s, char *sep)
 {
 	char	**strs;
+	int		len;
 
-	strs = malloc(sizeof(char *) * (ft_countwords(s, c) + 1));
+	if (!s)
+		return (NULL);
+	len = ft_countwords(s, sep);
+	strs = malloc(sizeof(char *) * (len + 1));
 	if (!strs)
 		return (NULL);
-	strs[ft_countwords(s, c)] = 0;
-	make_split(strs, (char *)s, c);
+	strs[len] = 0;
+	make_split(strs, (char *)s, sep);
 	return (strs);
 }

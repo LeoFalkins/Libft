@@ -6,13 +6,13 @@
 /*   By: lpolizzi <lpolizzi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 18:26:07 by lpolizzi          #+#    #+#             */
-/*   Updated: 2024/11/10 16:58:56 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:06:29 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/get_next_line.h"
 
-char	*gnl_remove_line(char *data)
+static char	*gnl_remove_line(char *data)
 {
 	char	*new_data;
 	int		i;
@@ -23,16 +23,10 @@ char	*gnl_remove_line(char *data)
 	while (data[i] && data[i] != '\n')
 		i++;
 	if (!data[i] || !data[i + 1])
-	{
-		free(data);
-		return (NULL);
-	}
+		return (free(data), NULL);
 	new_data = malloc(sizeof(char) * (gnl_strlen(data) - i + 1));
 	if (!new_data)
-	{
-		free(data);
-		return (NULL);
-	}
+		return (free(data), NULL);
 	i++;
 	while (data[i])
 		new_data[j++] = data[i++];
@@ -41,7 +35,7 @@ char	*gnl_remove_line(char *data)
 	return (new_data);
 }
 
-char	*gnl_cut_line(const char *data)
+static char	*gnl_cut_line(const char *data)
 {
 	size_t	i;
 	char	*ret;
@@ -79,10 +73,7 @@ static char	*gnl_read_from_file(int fd, char *data)
 	{
 		bytes_read = read(fd, s, BUFFER_SIZE);
 		if (bytes_read < 0)
-		{
-			free(s);
-			return (NULL);
-		}
+			return (free(s), NULL);
 		s[bytes_read] = 0;
 		data = gnl_strjoin(data, s);
 	}
@@ -103,9 +94,6 @@ char	*get_next_line(int fd)
 	line = gnl_cut_line(data[fd]);
 	data[fd] = gnl_remove_line(data[fd]);
 	if (!data[fd] && !gnl_strlen(line))
-	{
-		free(line);
-		return (NULL);
-	}
+		return (free(line), NULL);
 	return (line);
 }

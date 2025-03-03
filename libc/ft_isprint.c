@@ -6,7 +6,7 @@
 /*   By: lpolizzi <lpolizzi@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 19:07:44 by lpolizzi          #+#    #+#             */
-/*   Updated: 2024/10/08 19:08:39 by lpolizzi         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:14:10 by lpolizzi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,5 @@ int	ft_isprint(int c)
 {
 	if (c >= 32 && 126 >= c)
 		return (1);
-	else
-		return (0);
+	return (0);
 }
