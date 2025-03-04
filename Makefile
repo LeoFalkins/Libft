@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 COMP = cc
-CFLAGS = -Wall -Wextra -Werror - fPIC -I ./
+CFLAGS = -Wall -Wextra -Werror - -fPIC -I ./
 NAME = libft.a
 ADDIDIR = additional
 LIBCDIR = libc
