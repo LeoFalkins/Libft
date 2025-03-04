@@ -12,51 +12,36 @@
 
 #include "libft.h"
 
-static void	free_tab(char **tab)
+static int	ft_countwords(const char *s, char c)
 {
 	int	i;
+	int	count;
 
-	i = -1;
-	while (tab[++i])
-		free(tab[i]);
-	free(tab);
-}
-
-static bool	is_sep(char c, char *sep)
-{
-	if (!c)
-		return (true);
-	while (sep && *sep)
-	{
-		if (c == *sep)
-			return (true);
-		sep++;
-	}
-	return (false);
-}
-
-static int	ft_countwords(char *s, char *sep)
-{
-	int		count;
-	bool	in_word;
-
+	i = 0;
 	count = 0;
-	in_word = false;
-	while (*s)
+	while (s[i])
 	{
-		if (is_sep(*s, sep))
-			in_word = false;
-		else if (!in_word)
-		{
-			in_word = true;
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
 			count++;
-		}
-		s++;
+		i++;
 	}
 	return (count);
 }
 
-static void	make_split(char **strs, char *s, char *sep)
+static void	write_word(char *dest, char *src, char c)
+{
+	int	i;
+
+	i = 0;
+	while (src[i] && src[i] != c)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+}
+
+static void	make_split(char **strs, char *s, char c)
 {
 	int	i;
 	int	j;
@@ -66,37 +51,31 @@ static void	make_split(char **strs, char *s, char *sep)
 	word = 0;
 	while (s[i])
 	{
-		if (is_sep(s[i], sep))
+		if (s[i] == c)
 			i++;
 		else
 		{
 			j = 0;
-			while (!is_sep(s[i + j], sep))
+			while (s[i + j] != c && s[i + j])
 				j++;
 			strs[word] = (char *)malloc(sizeof(char) * (j + 1));
 			if (!strs[word])
-			{
-				free_tab(strs);
 				return ;
-			}
-			ft_strlcpy(strs[word++], s + i, j + 1);
+			write_word(strs[word], &s[i], c);
 			i += j;
+			word++;
 		}
 	}
 }
 
-char	**ft_split(const char *s, char *sep)
+char	**ft_split(const char *s, char c)
 {
 	char	**strs;
-	int		len;
 
-	if (!s)
-		return (NULL);
-	len = ft_countwords(s, sep);
-	strs = malloc(sizeof(char *) * (len + 1));
+	strs = malloc(sizeof(char *) * (ft_countwords(s, c) + 1));
 	if (!strs)
 		return (NULL);
-	strs[len] = 0;
-	make_split(strs, (char *)s, sep);
+	strs[ft_countwords(s, c)] = 0;
+	make_split(strs, (char *)s, c);
 	return (strs);
 }
