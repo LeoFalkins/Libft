@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 COMP = cc
-CFLAGS = -Wall -Wextra -Werror -I ./
+CFLAGS = -Wall -Wextra -Werror - fPIC -I ./
 NAME = libft.a
 ADDIDIR = additional
 LIBCDIR = libc
@@ -26,7 +26,7 @@ LIBCFILE =		ft_atoi					ft_bzero					ft_isalnum			ft_isalpha		\
 				ft_strlen				ft_strncmp					ft_strnstr			ft_strrchr		\
 				ft_tolower				ft_toupper					ft_calloc			ft_strcmp		\
 				ft_strstr
-	
+
 ADDIFILE =  	ft_strjoin				ft_substr					ft_strtrim			ft_split		\
 				ft_itoa					ft_strmapi					ft_striteri			ft_putchar_fd		\
 				ft_putstr_fd			ft_putendl_fd				ft_putnbr_fd
@@ -37,8 +37,8 @@ BONUSFILE = 	ft_lstnew_bonus			ft_lstadd_front_bonus		ft_lstsize_bonus	ft_lstlas
 
 PRINTFFILE = 	ft_printf				ft_printf_utils				ft_print_hex		ft_print_ptr		\
 				ft_print_unsigned
-		
-GNLFILE = 		get_next_line	
+
+GNLFILE = 		get_next_line			get_next_line_utils
 
 LIBC = $(addprefix $(LIBCDIR)/, $(addsuffix .c, $(LIBCFILE)))
 ADDI = $(addprefix $(ADDIDIR)/, $(addsuffix .c, $(ADDIFILE)))
